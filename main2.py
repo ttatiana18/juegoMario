@@ -69,7 +69,7 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.y = bloque.rect.y-64
         '''
 
-ANCHO=992
+ANCHO=1000
 ALTO=600
 
 if __name__ == '__main__': 
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     archivo.read('info_mapa.txt')
     name_archivo = archivo.get('info','imagen')
     mapa = archivo.get('info','mapa')
-    filas_mapa = mapa.split('/n')
+    filas_mapa = mapa.split('\n')
     name_sprites = archivo.sections()
     name_sprites.remove('info')
 
@@ -103,8 +103,8 @@ if __name__ == '__main__':
     cant_obj_ancho = archivo.get('info','can_ancho')
     cant_obj_alto = archivo.get('info','can_alto')
 
-    an_sprites = an_plantilla / int(cant_obj_ancho)
-    al_sprites = al_plantilla / int(cant_obj_alto)
+    an_sprites = int(an_plantilla / int(cant_obj_ancho))
+    al_sprites = int(al_plantilla / int(cant_obj_alto))
     print('ancho sprite: ', an_sprites)
     print('alto sprite: ', al_sprites)
     
