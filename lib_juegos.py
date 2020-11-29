@@ -9,7 +9,7 @@ NEGRO=[0,0,0]
 BLANCO=[255,255,255]
 
 def Recorte(nom_img,ob_an,ob_al):
-    terreno=pygame.image.load('C:/Users/ttati/Desktop/Estudio/semestre 6/Computacion grafica/juegos/images/'+nom_img)
+    terreno=pygame.image.load(nom_img)
     info=terreno.get_rect()
     print(info)
     #parametros: posicion x, posicion y, ancho corte, alto corte

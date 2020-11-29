@@ -6,7 +6,7 @@ from Jugador import Jugador
 from LecturaSpriteMapa import LecturaSpriteMapa
 
 ANCHO=992
-ALTO=600
+ALTO=568
 
 if __name__ == '__main__': 
     
@@ -25,37 +25,40 @@ if __name__ == '__main__':
 	f_x = 0
 	f_y = -129
 
-	jugador = Jugador(all_bloques, [f_x, f_y] )
+	jugador = Jugador(all_bloques, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
 
 	while not fin :
-	    #gestion de eventos
-	    for event in pygame.event.get():
-	        if event.type == pygame.QUIT:
-	            fin=True
+		#gestion de eventos
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				fin=True
 
-	        if event.type == pygame.KEYDOWN:
-	        	print("Evento key Down: ",event.key)
-	        	if event.key == pygame.K_RIGHT:
-	        		jugador.image = pygame.image.load("./data/img/sprite_mario_right.png").convert()
-	        		jugador.image.set_colorkey((0,0,0))
-	        		jugador.vel_x = 5
-	        	if event.key == pygame.K_LEFT:
-	        		jugador.image = pygame.image.load("./data/img/sprite_mario_left.png").convert()
-	        		jugador.image.set_colorkey((0,0,0))
-	        		jugador.vel_x = -5
+			if event.type == pygame.KEYDOWN:
+				print("Evento key Down: ",event.key)
+				if event.key == pygame.K_RIGHT:
+					jugador.vel_x = 5
+				if event.key == pygame.K_LEFT:
+					jugador.vel_x = -5
+				if event.key == pygame.K_UP:
+					if not(jugador.saltar):
+						jugador.vel_y = -14
+						jugador.saltar=True
 
-	        if event.type == pygame.KEYUP:
-	        	print("Evento key UP: ",event.key)
-	        	if event.key == pygame.K_RIGHT and jugador.vel_x != 0 :
-	        		jugador.vel_x = 0
-	        	if event.key == pygame.K_LEFT and jugador.vel_x != 0 :
-	        		jugador.vel_x = 0
+			if event.type == pygame.KEYUP:
+				print("Evento key UP: ",event.key)
+				if event.key == pygame.K_RIGHT and jugador.vel_x != 0 :
+					jugador.vel_x = 0
+					jugador.f_vel_x = 0
+				if event.key == pygame.K_LEFT and jugador.vel_x != 0 :
+					jugador.vel_x = 0
+					jugador.f_vel_x = 0
+				if event.key != pygame.K_UP:
+					jugador.vel_x=0
 
-	    pantalla.blit(fondo,[ jugador.f_x , jugador.f_y])
+		pantalla.blit(fondo,[ jugador.f_x , jugador.f_y])
+		all_sprites.update()
+		all_sprites.draw(pantalla)
+		pygame.display.flip()
 
-	    all_sprites.update()
-	    all_sprites.draw(pantalla)
-	    pygame.display.flip()
-
-	    clock.tick(60)
+		clock.tick(30)

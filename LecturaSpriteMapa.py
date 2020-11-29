@@ -51,7 +51,7 @@ class LecturaSpriteMapa():
 		all_sprites = pygame.sprite.Group()
 		for fil_m in self.filas_mapa:
 			for dato in fil_m:
-				if dato=="#": # Condicion para definir los elementos Bloque (piedas, palmas, tubos)
+				if dato=="b" or dato=="T" or dato=="a": # Condicion para definir los elementos Bloque (piedas, palmas, tubos)
 					bloque = Bloque(self.lista_obj_sprite[dato], [indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(bloque)
 					all_sprites.add(bloque)
