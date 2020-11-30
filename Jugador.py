@@ -10,15 +10,19 @@ class Jugador(pygame.sprite.Sprite):
 	def __init__(self, all_b_sprite, pos_fondo, info_ventana, info_fondo):
 		super().__init__()
 		self.m=Recorte("./data/img/mario.png",26,12)
+		self.m2=Recorte("./data/img/mario.png",26,7)
+		self.sabana=self.m
 		self.con_ini=14
 		self.con_final=0
 		self.dir=1
-		self.image=self.m[0][self.con_ini]
+		self.fila=0
+		self.image=self.sabana[self.fila][self.con_ini]
 		self.image.set_colorkey((0,0,0))
 		self.rect = self.image.get_rect()
 		self.rect.x = 100
 		self.rect.y = 400
 		self.all_b_sprite = all_b_sprite
+		self.all_modificadores=[]
 		self.ancho=info_ventana[0]
 		self.alto=info_ventana[1]
 		self.f_ancho=info_fondo[0]
@@ -82,11 +86,11 @@ class Jugador(pygame.sprite.Sprite):
 		self.rect.x += self.vel_x
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
 		for bloque in bloque_hit_list:
-			if self.vel_x > 0 and self.vel_y==0: 
+			if self.vel_x > 0 and (self.rect.top<bloque.rect.bottom and self.rect.top>bloque.rect.top): 
 				if self.rect.right > bloque.rect.left:
 					self.rect.right = bloque.rect.left
 					self.vel_x=0
-			elif self.vel_x<0: 
+			elif self.vel_x<0 and self.vel_y>0: 
 				if self.rect.left < bloque.rect.right:
 					self.rect.left = bloque.rect.right
 					self.vel_x=0
@@ -104,8 +108,18 @@ class Jugador(pygame.sprite.Sprite):
 					self.rect.top = bloque.rect.bottom
 					self.vel_y=0
 					bloque.golpear()
+		
+		modificador_hit_list = pygame.sprite.spritecollide(self, self.all_modificadores, True)
+		for modificador in modificador_hit_list:
+			if self.rect.right > bloque.rect.left:
+				if modificador.tipo==1:
+					self.sabana=self.m2
+					self.fila=2
+					self.rect[3]=42
+				elif modificador.tipo==2:
+					self.vidas+=1
 
-		self.image=self.m[0][self.con_ini] #aqui se cambia el sprite
+		self.image=self.sabana[self.fila][self.con_ini] #aqui se cambia el sprite
 		#animacion del sprite en x
 		if self.vel_x !=0 :
 			if self.con_ini<self.con_final:
@@ -121,11 +135,9 @@ class Jugador(pygame.sprite.Sprite):
 		#animacion del sprite en y
 		if self.vel_y !=0:
 			if self.dir==1:
-				self.image=self.m[0][24]
+				self.image=self.sabana[self.fila][24]
 			elif self.dir==2:
-				self.image=self.m[0][2]
+				self.image=self.sabana[self.fila][2]
 			
-
-
 		self.gravedad(1)
 

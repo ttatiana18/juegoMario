@@ -1,5 +1,6 @@
 import pygame
 from lib_juegos import *
+import random
  
 class Bloque_especial(pygame.sprite.Sprite):
     """docstring for Meteoro"""
@@ -7,6 +8,8 @@ class Bloque_especial(pygame.sprite.Sprite):
         super().__init__()
         self.m=Recorte("./data/img/elementos_mapa.png",33,28)
         self.con=24
+        self.tipo=random.randrange(1,4)
+        print(self.tipo)
         self.image=self.m[0][self.con]
         self.image.set_colorkey( (0,0,0) )
         self.rect = self.image.get_rect()
@@ -32,7 +35,6 @@ class Bloque_especial(pygame.sprite.Sprite):
             self.rect.y += velocidady
         if self.golpeada:
             self.gravedad(0.5)
-            self.activa=False
             if self.vel_y>2.5:
                 self.vel_y=0
                 self.golpeada=False
@@ -50,3 +52,5 @@ class Bloque_especial(pygame.sprite.Sprite):
     def golpear(self):
         self.vel_y=-2
         self.golpeada=True
+
+        
