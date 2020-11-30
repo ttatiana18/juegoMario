@@ -9,11 +9,13 @@ class Jugador(pygame.sprite.Sprite):
 	"""docstring for Nave"""
 	def __init__(self, all_b_sprite, pos_fondo, info_ventana, info_fondo):
 		super().__init__()
-		self.m=Recorte("./data/img/mario.png",26,12)
-		self.m2=Recorte("./data/img/mario.png",26,7)
+		self.m=Recorte("./data/img/mario_1.png",26,5)
+		self.m2=Recorte("./data/img/mario_2.png",26,1)
+		self.m3=Recorte("./data/img/mario_3.png",17,1)
 		self.sabana=self.m
 		self.con_ini=14
 		self.con_final=0
+		self.num_sprites=2
 		self.dir=1
 		self.fila=0
 		self.image=self.sabana[self.fila][self.con_ini]
@@ -83,17 +85,6 @@ class Jugador(pygame.sprite.Sprite):
 				self.all_b_sprite.update(0,self.b_vel_y)
 				self.f_y +=self.f_vel_y
 		
-		self.rect.x += self.vel_x
-		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
-		for bloque in bloque_hit_list:
-			if self.vel_x > 0 and (self.rect.top<bloque.rect.bottom and self.rect.top>bloque.rect.top): 
-				if self.rect.right > bloque.rect.left:
-					self.rect.right = bloque.rect.left
-					self.vel_x=0
-			elif self.vel_x<0 and self.vel_y>0: 
-				if self.rect.left < bloque.rect.right:
-					self.rect.left = bloque.rect.right
-					self.vel_x=0
 
 		self.rect.y += self.vel_y
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
@@ -108,36 +99,74 @@ class Jugador(pygame.sprite.Sprite):
 					self.rect.top = bloque.rect.bottom
 					self.vel_y=0
 					bloque.golpear()
+
+					
+		self.rect.x += self.vel_x
+		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
+		for bloque in bloque_hit_list:
+			if self.vel_x > 0 and ((self.rect.top<=bloque.rect.bottom and self.rect.top>=bloque.rect.top) or (self.rect.bottom<=bloque.rect.bottom and self.rect.bottom>=bloque.rect.top)): 
+				if self.rect.right > bloque.rect.left:
+					self.rect.right = bloque.rect.left
+					self.vel_x=0
+			elif self.vel_x<0 and self.vel_y>=0: 
+				if self.rect.left < bloque.rect.right:
+					self.rect.left = bloque.rect.right
+					self.vel_x=0
 		
 		modificador_hit_list = pygame.sprite.spritecollide(self, self.all_modificadores, True)
 		for modificador in modificador_hit_list:
-			if self.rect.right > bloque.rect.left:
-				if modificador.tipo==1:
-					self.sabana=self.m2
-					self.fila=2
-					self.rect[3]=42
-				elif modificador.tipo==2:
-					self.vidas+=1
+			if modificador.tipo==1:
+				self.sabana=self.m2
+				self.fila=0
+				self.rect[3]=51
+				self.estado=1
+			elif modificador.tipo==2:
+				self.vidas+=1
+			elif modificador.tipo==3:
+				self.sabana=self.m3
+				self.fila=0
+				if self.dir==1:
+					self.con_ini=10
+				else:
+					self.con_ini=6
+				self.con_final=0
+				self.rect[2]=46
+				self.rect[3]=51
+				self.estado=2
+				self.num_sprites=1
+				self.rect.bottom=modificador.rect.bottom
 
 		self.image=self.sabana[self.fila][self.con_ini] #aqui se cambia el sprite
 		#animacion del sprite en x
 		if self.vel_x !=0 :
 			if self.con_ini<self.con_final:
-				self.con_ini+=2
+				self.con_ini+=self.num_sprites
 			else:
-				self.con_ini-=2
+				self.con_ini-=self.num_sprites
 		else:
 			if self.dir==1:
-				self.con_ini=14
+				if self.estado==1 or self.estado==0:
+					self.con_ini=14
+				else:
+					self.con_ini=10
 			else: 
-				self.con_ini=12
+				if self.estado==1 or self.estado==0:
+					self.con_ini=12
+				else:
+					self.con_ini=6
 
 		#animacion del sprite en y
 		if self.vel_y !=0:
 			if self.dir==1:
-				self.image=self.sabana[self.fila][24]
+				if self.estado==1 or self.estado==0:
+					self.image=self.sabana[self.fila][24]
+				else:
+					self.image=self.sabana[self.fila][15]
 			elif self.dir==2:
-				self.image=self.sabana[self.fila][2]
-			
+				if self.estado==1 or self.estado==0:
+					self.image=self.sabana[self.fila][2]
+				else:
+					self.image=self.sabana[self.fila][1]
+
 		self.gravedad(1)
 

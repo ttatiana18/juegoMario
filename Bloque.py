@@ -7,7 +7,7 @@ class Bloque(pygame.sprite.Sprite):
 		self.image = b_sprite.convert()
 		self.image.set_colorkey( (0,0,0) )
 		self.rect = self.image.get_rect()
-		self.tipo=0
+		self.tipo_b=0
 		self.rect.x = pos[0]
 		self.rect.y = pos[1]
 		self.vel_y=0

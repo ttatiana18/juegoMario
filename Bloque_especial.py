@@ -8,8 +8,8 @@ class Bloque_especial(pygame.sprite.Sprite):
         super().__init__()
         self.m=Recorte("./data/img/elementos_mapa.png",33,28)
         self.con=24
-        self.tipo=random.randrange(1,4)
-        print(self.tipo)
+        self.tipo_b=1#tipo bloque
+        self.tipo_m=random.randrange(1,4)#tipo modificador
         self.image=self.m[0][self.con]
         self.image.set_colorkey( (0,0,0) )
         self.rect = self.image.get_rect()

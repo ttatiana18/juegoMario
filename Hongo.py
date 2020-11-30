@@ -34,9 +34,7 @@ class Hongo(pygame.sprite.Sprite):
         bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
         for bloque in bloque_hit_list:
             if self.vel_x > 0: 
-                print('aqui entro el hongo')
                 if self.rect.right > bloque.rect.left and (self.rect.top<bloque.rect.bottom and self.rect.top>bloque.rect.top):
-                    print('por aqui',self.rect.bottom,'--',self.rect.top,'--',bloque.rect.bottom,'--',bloque.rect.top)
                     self.rect.right = bloque.rect.left
                     self.vel_x=-5
             elif self.vel_x<0: 

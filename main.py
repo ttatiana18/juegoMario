@@ -5,6 +5,7 @@ from Bloque import Bloque
 from Jugador import Jugador
 from LecturaSpriteMapa import LecturaSpriteMapa
 from Hongo import Hongo
+from Planta import Planta
 
 ANCHO=1000
 ALTO=568
@@ -39,13 +40,21 @@ if __name__ == '__main__':
 			if event.type == pygame.KEYDOWN:
 				print("Evento key Down: ",event.key)
 				if event.key == pygame.K_RIGHT:
-					jugador.con_ini=14
-					jugador.con_final=20
+					if jugador.estado==1 or jugador.estado==0:
+						jugador.con_ini=14
+						jugador.con_final=20
+					else:
+						jugador.con_ini=10
+						jugador.con_final=12
 					jugador.vel_x = 5
 					jugador.dir=1
 				if event.key == pygame.K_LEFT:
-					jugador.con_ini=12
-					jugador.con_final=7
+					if jugador.estado==1 or jugador.estado==0:
+						jugador.con_ini=12
+						jugador.con_final=7
+					else:
+						jugador.con_ini=6
+						jugador.con_final=4
 					jugador.vel_x = -5
 					jugador.dir=2
 				if event.key == pygame.K_UP:
@@ -59,31 +68,53 @@ if __name__ == '__main__':
 				if event.key == pygame.K_RIGHT and jugador.vel_x != 0 :
 					jugador.vel_x = 0
 					jugador.f_vel_x = 0
-					jugador.con_ini=14
+					if jugador.estado==1 or jugador.estado==0:
+						jugador.con_ini=14
+					else:
+						jugador.con_ini=10
+					jugador.con_final=0
 				if event.key == pygame.K_LEFT and jugador.vel_x != 0 :
 					jugador.vel_x = 0
 					jugador.f_vel_x = 0
-					jugador.con_ini=12
+					if jugador.estado==1 or jugador.estado==0:
+						jugador.con_ini=12
+					else: 
+						jugador.con_ini=6
+					jugador.con_final=0
 				if event.key != pygame.K_UP:
 					jugador.vel_x=0
 				if event.key == pygame.K_UP and jugador.vel_x>0:
-					jugador.con_ini=14
-					jugador.con_final=20
+					if jugador.estado==1 or jugador.estado==0:
+						jugador.con_ini=14
+						jugador.con_final=20
+					else:
+						jugador.con_ini=10
+						jugador.con_final=12
 					jugador.vel_y = 0
 					jugador.f_vel_y = 0
 				if event.key == pygame.K_UP and jugador.vel_x<0:
-					jugador.con_ini=12
-					jugador.con_final=7
+					if jugador.estado==1 or jugador.estado==0:
+						jugador.con_ini=12
+						jugador.con_final=7
+					else:
+						jugador.con_ini=6
+						jugador.con_final=4
 					jugador.vel_y = 0
 					jugador.f_vel_y = 0
 
 		for bloque_e in all_bloques:
-			if bloque_e.tipo==1 or bloque_e.tipo==2:
+			if bloque_e.tipo_b==1:
 				if bloque_e.activa and bloque_e.golpeada:
-					hongo=Hongo(all_bloques,[bloque_e.rect.x,bloque_e.rect.top-32],bloque_e.tipo)
-					all_sprites.add(hongo)
-					all_modificadores.add(hongo)
+					if bloque_e.tipo_m == 1 or bloque_e.tipo_m == 2:
+						hongo=Hongo(all_bloques,[bloque_e.rect.x,bloque_e.rect.top-32],bloque_e.tipo_m)
+						all_sprites.add(hongo)
+						all_modificadores.add(hongo)
+					else:
+						planta=Planta([bloque_e.rect.x,bloque_e.rect.top-32])
+						all_sprites.add(planta)
+						all_modificadores.add(planta)
 					bloque_e.activa=False
+
 		jugador.all_modificadores=all_modificadores
 
 		pantalla.blit(fondo,[ jugador.f_x , jugador.f_y])
@@ -92,4 +123,3 @@ if __name__ == '__main__':
 		pygame.display.flip()
 
 		clock.tick(30)
-		print('vidas mario:',jugador.vidas)
