@@ -1,6 +1,7 @@
 import configparser
 import pygame
 from Bloque import Bloque
+from Bloque_especial import Bloque_especial
 
 class LecturaSpriteMapa():
 
@@ -55,8 +56,10 @@ class LecturaSpriteMapa():
 					bloque = Bloque(self.lista_obj_sprite[dato], [indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(bloque)
 					all_sprites.add(bloque)
-				if dato=="G": # Generador de enemigos Hongos
-					pass
+				if dato=="e": # Generador de enemigos Hongos
+					bloque_e= Bloque_especial([indice_col*self.an_sprites, indice_fil*self.al_sprites])
+					all_bloque_sprites.add(bloque_e)
+					all_sprites.add(bloque_e)
 				indice_col += 1
 			indice_fil += 1
 			indice_col = 0

@@ -18,9 +18,12 @@ class Bloque(pygame.sprite.Sprite):
 		else:
 			self.vel_y+=cte
 
-	def update(self, velocidad=0):
+	def update(self, velocidad=0,velocidady=0):
 		self.rect.x += velocidad
-		self.rect.y += self.vel_y
+		if velocidady==0:
+			self.rect.y += self.vel_y
+		else:
+			self.rect.y += velocidady
 		if self.golpeada:
 			self.gravedad(0.5)
 			if self.vel_y>2.5:

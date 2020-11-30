@@ -18,8 +18,6 @@ def Recorte(nom_img,ob_an,ob_al):
     ancho_sp=int(an_t/ob_an)
     alto_sp=int(al_t/ob_al)
 
-    print(ancho_sp,'--',alto_sp)
-
 
     ls_t=[]
     for fila in range(ob_al):
