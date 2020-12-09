@@ -7,7 +7,9 @@ class Bloque(pygame.sprite.Sprite):
 		self.image = b_sprite.convert()
 		self.image.set_colorkey( (0,0,0) )
 		self.rect = self.image.get_rect()
+		self.sonido=pygame.mixer.Sound("./data/music/smb_bump.ogg")
 		self.tipo_b=0
+		self.vel_x=0
 		self.rect.x = pos[0]
 		self.rect.y = pos[1]
 		self.vel_y=0
@@ -20,6 +22,7 @@ class Bloque(pygame.sprite.Sprite):
 			self.vel_y+=cte
 
 	def update(self, velocidad=0,velocidady=0):
+		self.vel_x=velocidad
 		self.rect.x += velocidad
 		if velocidady==0:
 			self.rect.y += self.vel_y
@@ -33,4 +36,5 @@ class Bloque(pygame.sprite.Sprite):
 
 	def golpear(self):
 		self.vel_y=-2
+		self.sonido.play()
 		self.golpeada=True

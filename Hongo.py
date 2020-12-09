@@ -15,6 +15,11 @@ class Hongo(pygame.sprite.Sprite):
             self.image=self.m[0][1]
         self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
+        self.sonido = pygame.mixer.Sound("./data/music/aparece_modificador.ogg")
+        self.sonido_vida= pygame.mixer.Sound("./data/music/vida.ogg")
+        self.sonido_hongo= pygame.mixer.Sound("./data/music/crecer.ogg")
+        self.sonido.set_volume(0.3)
+        self.sonido.play()
         self.all_b_sprite=all_bloques
         self.rect.x = pos[0]
         self.rect.y = pos[1]
@@ -56,4 +61,10 @@ class Hongo(pygame.sprite.Sprite):
                     self.vel_y=0
             
         self.gravedad(1)
+    
+    def sonar(self):
+        if self.tipo == 1:
+            self.sonido_hongo.play()
+        else:
+            self.sonido_vida.play()
 

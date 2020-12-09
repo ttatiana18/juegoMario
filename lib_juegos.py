@@ -11,14 +11,11 @@ BLANCO=[255,255,255]
 def Recorte(nom_img,ob_an,ob_al):
     terreno=pygame.image.load(nom_img)
     info=terreno.get_rect()
-    print(info)
     #parametros: posicion x, posicion y, ancho corte, alto corte
     an_t=info[2] #ancho de la imagen
     al_t=info[3] #alto de la imagen
     ancho_sp=int(an_t/ob_an)
     alto_sp=int(al_t/ob_al)
-
-    print(alto_sp,'--',ancho_sp)
     
     ls_t=[]
     for fila in range(ob_al):

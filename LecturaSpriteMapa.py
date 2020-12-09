@@ -2,6 +2,8 @@ import configparser
 import pygame
 from Bloque import Bloque
 from Bloque_especial import Bloque_especial
+from Generador_hongos import Generador_hongos
+from Generador_caracol import Generador_caracol
 
 class LecturaSpriteMapa():
 
@@ -50,18 +52,27 @@ class LecturaSpriteMapa():
 		indice_fil = 0
 		all_bloque_sprites = pygame.sprite.Group()
 		all_sprites = pygame.sprite.Group()
+		all_generadores_caracoles = pygame.sprite.Group()
 		for fil_m in self.filas_mapa:
 			for dato in fil_m:
 				if dato=="b" or dato=="T" or dato=="a": # Condicion para definir los elementos Bloque (piedas, palmas, tubos)
 					bloque = Bloque(self.lista_obj_sprite[dato], [indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(bloque)
 					all_sprites.add(bloque)
-				if dato=="e": # Generador de enemigos Hongos
+				if dato=="e": # bloque especial con los 3 modificadores
 					bloque_e= Bloque_especial([indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(bloque_e)
 					all_sprites.add(bloque_e)
+				if dato=="G": # generador de hongos
+					generador= Generador_hongos(self.lista_obj_sprite[dato],[indice_col*self.an_sprites, indice_fil*self.al_sprites])
+					all_bloque_sprites.add(generador)
+					all_sprites.add(generador)
+				if dato=="C": # generador de caracoles
+					generador2= Generador_caracol([600,100])
+					all_generadores_caracoles.add(generador2)
+					all_sprites.add(generador2)
 				indice_col += 1
 			indice_fil += 1
 			indice_col = 0
 
-		return all_sprites, all_bloque_sprites
+		return all_sprites, all_bloque_sprites, all_generadores_caracoles
