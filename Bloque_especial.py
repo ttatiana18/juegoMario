@@ -9,7 +9,7 @@ class Bloque_especial(pygame.sprite.Sprite):
         self.m=Recorte("./data/img/elementos_mapa.png",33,28)
         self.con=24
         self.sonido=pygame.mixer.Sound("./data/music/smb_bump.ogg")
-        self.tipo_b=1#tipo bloque
+        self.tipo_b=1 #tipo bloque
         self.tipo_m=random.randrange(1,4)#tipo modificador
         self.image=self.m[0][self.con]
         self.image.set_colorkey( (0,0,0) )

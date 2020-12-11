@@ -37,8 +37,8 @@ class Jugador(pygame.sprite.Sprite):
 		self.f_alto=info_fondo[1]
 		self.vel_x = 0
 		self.vel_y = 5
-		self.f_vel_x = 0
-		self.b_vel_x = 0
+		self.f_vel_x = 0 #velocidad del fondo
+		self.b_vel_x = 0 #velocidad de los bloques que sirven para todos los sprites
 		self.f_vel_y = 0
 		self.b_vel_y = 0
 		self.f_x = pos_fondo[0]
