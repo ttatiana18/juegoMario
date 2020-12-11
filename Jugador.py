@@ -131,7 +131,7 @@ class Jugador(pygame.sprite.Sprite):
 				self.vida=0
 				self.sonido_herido.play()
 			if self.vel_y > 0: 
-				if (self.rect.bottom > (bloque.rect.top-20)) and (self.rect.bottom < (bloque.rect.top+20)):
+				if ((self.rect.bottom > (bloque.rect.top-20)) and (self.rect.bottom < (bloque.rect.top+20))) or (self.rect.bottom > (bloque.rect.top-40)) and (self.rect.bottom < (bloque.rect.top+40)):
 					self.rect.bottom=bloque.rect.top
 					self.vel_y=0
 					self.saltar=False

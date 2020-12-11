@@ -6,11 +6,15 @@ LIMITE_DER = 900
 LIMITE_SUP = 100
 LIMITE_INF = 484
 class Hongo_enemigo(pygame.sprite.Sprite):
-    def __init__(self,all_bloques, pos):
+    def __init__(self,all_bloques, pos,color):
         super().__init__()
-        self.m=Recorte("./data/img/enemies.png",15,12)
+        self.m=Recorte("./data/img/enemies.png",16,12)
         self.con=0
-        self.image=self.m[0][self.con]
+        if color == 1:
+            self.fila=0
+        elif color == 2:
+            self.fila=1
+        self.image=self.m[self.fila][self.con]
         self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         self.all_b_sprite=all_bloques
@@ -53,12 +57,12 @@ class Hongo_enemigo(pygame.sprite.Sprite):
 
         #animacion del sprite en x
         if self.aplastado:
-            self.image=self.m[0][2]
+            self.image=self.m[self.fila][2]
             self.vel_x=0
             self.vel_y=10
         else:
             if (self.temp%6)==0 and self.vel_x!=0:
-                self.image=self.m[0][self.con]
+                self.image=self.m[self.fila][self.con]
                 if self.con<1:
                     self.con+=1
                 else:

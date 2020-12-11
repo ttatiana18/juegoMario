@@ -16,7 +16,9 @@ class LecturaSpriteMapa():
 		archivo.read('./data/img/'+nombre_archivo)
 		name_archivo = archivo.get('info','imagen')
 		mapa = archivo.get('info','mapa')
+		mapa2 = archivo.get('info','mapa2')
 		self.filas_mapa = mapa.split('\n')
+		self.filas_mapa2 = mapa2.split('\n')
 		name_sprites = archivo.sections()
 		name_sprites.remove('info')
 
@@ -50,16 +52,24 @@ class LecturaSpriteMapa():
 			alto = int(archivo.get(objeto,'alto'))
 			self.lista_obj_sprite[objeto] = plantilla_sprite.subsurface(columna*self.an_sprites,fila*self.al_sprites,ancho*self.an_sprites,alto*self.al_sprites)
 
-	def cargarObjetosMapa(self):
+	def cargarObjetosMapa(self,mapa):
 		indice_col = 0
 		indice_fil = 0
 		all_bloque_sprites = pygame.sprite.Group()
 		all_sprites = pygame.sprite.Group()
 		all_generadores_caracoles = pygame.sprite.Group()
 		all_plantas_enemies = pygame.sprite.Group()
-		for fil_m in self.filas_mapa:
+		if mapa == 1:
+			filas=self.filas_mapa
+		elif mapa == 2:
+			filas=self.filas_mapa2
+		for fil_m in filas:
 			for dato in fil_m:
 				if dato=="b" or dato=="T" or dato=="a": # Condicion para definir los elementos Bloque (piedas, palmas, tubos)
+					bloque = Bloque(self.lista_obj_sprite[dato], [indice_col*self.an_sprites, indice_fil*self.al_sprites])
+					all_bloque_sprites.add(bloque)
+					all_sprites.add(bloque)
+				if dato=="B" or dato=="L" or dato=="S" or dato=="A": # Condicion para definir los elementos Bloque (piedas, palmas, tubos)
 					bloque = Bloque(self.lista_obj_sprite[dato], [indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(bloque)
 					all_sprites.add(bloque)
@@ -84,7 +94,11 @@ class LecturaSpriteMapa():
 					all_generadores_caracoles.add(generador2)
 					all_sprites.add(generador2)
 				if dato=="p": #enemigo estacionario planta enemiga
-					planta=Planta_enemiga([indice_col*self.an_sprites, indice_fil*self.al_sprites])
+					if mapa == 1:
+						color=1
+					else:
+						color =2
+					planta=Planta_enemiga([indice_col*self.an_sprites, indice_fil*self.al_sprites],color)
 					all_plantas_enemies.add(planta)
 					all_sprites.add(planta)
 				indice_col += 1
