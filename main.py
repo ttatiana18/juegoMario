@@ -26,9 +26,10 @@ if __name__ == '__main__':
 	condicion3=False
 
 	obj_lectura_mapa = LecturaSpriteMapa('info_mapa.txt')
-	all_sprites, all_bloques, all_generadores_caracoles = obj_lectura_mapa.cargarObjetosMapa()
+	all_sprites, all_bloques, all_generadores_caracoles,all_plantas_enemies = obj_lectura_mapa.cargarObjetosMapa()
 
-	fondo=pygame.image.load('./data/img/mapa2.png')
+	fondo=pygame.image.load('./data/img/mapa3.png')
+	tuberia=pygame.image.load('./data/img/tubo.png')
 	info=fondo.get_rect()
 	fondo_ancho=info[2]
 	fondo_alto=info[3]
@@ -42,7 +43,7 @@ if __name__ == '__main__':
 	balas_mario=pygame.sprite.Group()
 
 	fuente=pygame.font.Font(None,32)
-	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
+	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
 
 
@@ -50,7 +51,7 @@ if __name__ == '__main__':
 	all_sprites.add(bowser)
 
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
-	musica_fondo.set_volume(0.2)
+	musica_fondo.set_volume(0)
 	musica_fondo.play()
 	tiempo=3600
 	while not fin_juego and not fin:
@@ -95,6 +96,9 @@ if __name__ == '__main__':
 							bala.vel_x=-4
 						balas_mario.add(bala)
 						all_sprites.add(bala)
+				if event.key == pygame.K_n:
+					if tecla_presionada[pygame.K_s]:
+						jugador.vida=10000
 						
 			if event.type == pygame.KEYUP:
 				jugador.con_final=0
@@ -221,7 +225,7 @@ if __name__ == '__main__':
 			jugador.vida=0
 			condicion3=True
     			
-		if jugador.vida<=0 or (jugador.rect.x>800 and jugador.f_x==-3000) or condicion3 or tiempo<=0:
+		if jugador.vida<=0 or (jugador.rect.x>800 and jugador.f_x==-3680) or condicion3 or tiempo<=0:
 			fin_juego=True
 		
 		if tiempo<=0:
@@ -282,12 +286,35 @@ if __name__ == '__main__':
 			fuego.play()
 			time.sleep(0.55)
 		pantalla.fill(NEGRO)
-		texto=fuente.render('YOU WIN',True, VERDE)
-		pantalla.blit(texto,[450,300])
 		pygame.display.flip()
-		adios_g=pygame.mixer.Sound("./data/music/yes.ogg")
-		adios_g.play()
-		time.sleep(1)
+		time.sleep(2)
+		jugador.rect.x=500
+		jugador.rect.y=400
+		for nube in all_generadores_caracoles:
+			all_generadores_caracoles.remove(nube)
+			all_sprites.remove(nube)
+		for enemigo in all_enemies:
+			all_enemies.remove(enemigo)
+			all_sprites.remove(enemigo)
+		for caracol in all_enemies_caracol:
+			all_enemies_caracol.remove(caracol)
+			all_sprites.remove(caracol)
+		sonar_tuberia=True
+		while jugador.f_x>-3690:
+			if jugador.rect.x>870 and sonar_tuberia:
+				ingresar=pygame.mixer.Sound("./data/music/tuberia.ogg")
+				ingresar.play()
+				sonar_tuberia=False
+			jugador.vel_x=5
+			jugador.limite_derecho=900
+			pantalla.blit(fondo,[-4000, -708])
+			all_sprites.update()
+			all_sprites.draw(pantalla)
+			pantalla.blit(tuberia,[870,380])
+			pygame.display.flip()
+
+			clock.tick(30)
+
 	
 	while not fin:
     	#gestion de eventos
