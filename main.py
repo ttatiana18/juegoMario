@@ -386,6 +386,7 @@ if __name__ == '__main__':
 		musica_fondo.set_volume(0.1)
 		musica_fondo.play()
 		tiempo=3600
+		isaliveFinal = False
 		while not fin_juego and not fin:
 			if tiempo%360==0:
 				musica_fondo.play()
@@ -569,6 +570,14 @@ if __name__ == '__main__':
 			#informacion del jugador
 			info_salud='Vidas :'+str(jugador.vida)
 			texto=fuente.render(info_salud,True, BLANCO)
+
+			#Bowser
+			if(jugador.f_x <= -3200 and (not isaliveFinal)):
+				bowser = FinalEnemy(all_bloques, [800,160])
+				all_sprites.add(bowser)
+				print(bowser.rect.x)
+				isinstance = True
+
 
 			#informacion del tiempo
 			info_tiempo='Tiempo :'+str(tiempo)
