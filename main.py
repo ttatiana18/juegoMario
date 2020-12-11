@@ -82,9 +82,9 @@ if __name__ == '__main__':
 						bala=Bala(posicion)
 						if tecla_presionada[pygame.K_UP]:
 							bala.vel_y=-8
-						elif jugador.con_ini==14 or jugador.con_ini==10:
+						elif jugador.con_ini==10:
 							bala.vel_x=4
-						elif jugador.con_ini==12 or jugador.con_ini==6:
+						elif jugador.con_ini==6:
 							bala.vel_x=-4
 						balas_mario.add(bala)
 						all_sprites.add(bala)
@@ -148,7 +148,7 @@ if __name__ == '__main__':
 						hongo.vel_x=2             
 						all_enemies.add(hongo)
 						all_sprites.add(hongo)
-						bloque_e.temp=200
+						bloque_e.temp=400
 						bloque_e.cont+=1
 
 		for enemigo_generador in all_generadores_caracoles:
@@ -157,7 +157,7 @@ if __name__ == '__main__':
 				caracol.vel_x=2    
 				all_enemies_caracol.add(caracol)
 				all_sprites.add(caracol)
-				enemigo_generador.temp=200
+				enemigo_generador.temp=400
 
 		for bala in balas_mario:
 			balas_hit_enemies=pygame.sprite.spritecollide(bala,all_enemies,True)
