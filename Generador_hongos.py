@@ -8,7 +8,7 @@ class Generador_hongos(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.rect.x=pos[0]
         self.rect.y=pos[1]
-        self.temp=400
+        self.temp=300
         self.cont=0
         self.vel_y=0
         self.vel_x=0
