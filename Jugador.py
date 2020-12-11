@@ -7,7 +7,7 @@ LIMITE_SUP = 50
 LIMITE_INF = 484
 class Jugador(pygame.sprite.Sprite):
 	"""docstring for Nave"""
-	def __init__(self, all_b_sprite, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, pos_fondo, info_ventana, info_fondo):
+	def __init__(self, all_b_sprite, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies,final_enemy, pos_fondo, info_ventana, info_fondo):
 		super().__init__()
 		self.m=Recorte("./data/img/mario_1.png",26,5)
 		self.m2=Recorte("./data/img/mario_2.png",26,1)
@@ -26,6 +26,7 @@ class Jugador(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = 100
 		self.rect.y = 400
+		self.final_enemy=final_enemy
 		self.all_b_sprite = all_b_sprite
 		self.all_enemies=all_enemies
 		self.all_plantas=all_plantas
@@ -121,7 +122,6 @@ class Jugador(pygame.sprite.Sprite):
 				self.all_plantas.update(0,self.b_vel_y)
 				self.all_plantas_enemies.update(0,self.b_vel_y)
 		
-		print(self.f_y,self.f_x)
 		self.rect.y += self.vel_y
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
 		for bloque in bloque_hit_list:
@@ -241,6 +241,35 @@ class Jugador(pygame.sprite.Sprite):
 				elif self.estado==2:
 					self.estado=1
 					self.vida-=2
+
+		final_enemy_hit_list = pygame.sprite.spritecollide(self, self.final_enemy, False)
+		for enemigo in final_enemy_hit_list:
+			if not self.muerto:
+				self.sonido_herido.play()
+				if(self.rect.right >= enemigo.rect.left and self.rect.x<enemigo.rect.x):
+					self.rect.right = enemigo.rect.left
+					self.vel_x = 0
+					if self.colisionando_v:
+						enemigo.rect.left=self.rect.right
+						enemigo.vel_x=2
+						self.colisionando_v=False
+				elif (self.rect.left <= enemigo.rect.right and self.rect.x>enemigo.rect.x):
+					self.rect.left = enemigo.rect.right
+					self.vel_x = 0
+					if self.colisionando_v:
+						enemigo.rect.right=self.rect.left
+						enemigo.vel_x=-2
+						self.colisionando_v=False
+				elif(self.rect.top>=enemigo.rect.bottom and (self.rect.x==enemigo.rect.x)):
+					enemigo.rect.bottom=self.rect.top
+				if self.estado==0:
+					self.vida-=10
+				elif self.estado==1:
+					self.estado=0
+					self.vida-=-10
+				elif self.estado==2:
+					self.estado=1
+					self.vida-=-10
 		
 
 		enemies_plantas_hit_list = pygame.sprite.spritecollide(self, self.all_plantas_enemies, False)

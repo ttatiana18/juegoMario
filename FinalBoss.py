@@ -18,7 +18,7 @@ class FinalEnemy(pygame.sprite.Sprite):
 		self.vel_y = 0
 		self.temp = 0
 		self.vivo = False
-		self.limiteD=self.rect.right + 200
+		self.limiteD=self.rect.right + 50
 		self.limiteI=self.rect.left - 50
 
 	def gravedad(self,cte):

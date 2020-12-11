@@ -92,8 +92,9 @@ if __name__ == '__main__':
 	all_enemies_caracol=pygame.sprite.Group()
 	all_enemies=pygame.sprite.Group()
 	balas_mario=pygame.sprite.Group()
+	final_enemy=pygame.sprite.Group()
 
-	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
+	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies,final_enemy, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
 
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
@@ -206,7 +207,7 @@ if __name__ == '__main__':
 						hongo.vel_x=2             
 						all_enemies.add(hongo)
 						all_sprites.add(hongo)
-						bloque_e.temp=400
+						bloque_e.temp=200
 						bloque_e.cont+=1
 
 		for enemigo_generador in all_generadores_caracoles:
@@ -215,7 +216,7 @@ if __name__ == '__main__':
 				caracol.vel_x=2    
 				all_enemies_caracol.add(caracol)
 				all_sprites.add(caracol)
-				enemigo_generador.temp=400
+				enemigo_generador.temp=200
 
 		for bala in balas_mario:
 			balas_hit_enemies=pygame.sprite.spritecollide(bala,all_enemies,True)
@@ -376,8 +377,9 @@ if __name__ == '__main__':
 		all_enemies_caracol=pygame.sprite.Group()
 		all_enemies=pygame.sprite.Group()
 		balas_mario=pygame.sprite.Group()
+		final_enemy=pygame.sprite.Group()
 
-		jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
+		jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies,final_enemy, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 		all_sprites.add(jugador)
 		fin=False
 		fin_juego=False
@@ -495,7 +497,7 @@ if __name__ == '__main__':
 							hongo.vel_x=2             
 							all_enemies.add(hongo)
 							all_sprites.add(hongo)
-							bloque_e.temp=400
+							bloque_e.temp=200
 							bloque_e.cont+=1
 
 			for enemigo_generador in all_generadores_caracoles:
@@ -504,7 +506,7 @@ if __name__ == '__main__':
 					caracol.vel_x=2    
 					all_enemies_caracol.add(caracol)
 					all_sprites.add(caracol)
-					enemigo_generador.temp=400
+					enemigo_generador.temp=200
 
 			for bala in balas_mario:
 				balas_hit_enemies=pygame.sprite.spritecollide(bala,all_enemies,True)
@@ -551,7 +553,6 @@ if __name__ == '__main__':
 			jugador.all_plantas=all_plantas
 			
 			#condiciones de fin de juego
-			print('.........')
 			if jugador.f_y<-650 and jugador.vel_y>0 and (jugador.f_x==0):
 				jugador.vida=0
 				condicion3=True
@@ -561,7 +562,7 @@ if __name__ == '__main__':
 			elif jugador.f_y<-745 and jugador.vel_y>0 and (jugador.f_x<-2405 and jugador.f_x>-2790):
 				jugador.vida=0
 				condicion3=True
-			if jugador.vida<=0 or (jugador.rect.x>800 and jugador.f_x==-3680) or condicion3 or tiempo<=0:
+			if jugador.vida<=0 or (jugador.rect.x>940 and jugador.f_x==-3680) or condicion3 or tiempo<=0:
 				fin_juego=True
 			
 			if tiempo<=0:
@@ -575,8 +576,11 @@ if __name__ == '__main__':
 			if(jugador.f_x <= -3200 and (not isaliveFinal)):
 				bowser = FinalEnemy(all_bloques, [800,160])
 				all_sprites.add(bowser)
+				final_enemy.add(bowser)
 				print(bowser.rect.x)
-				isinstance = True
+				isaliveFinal = True
+				jugador.final_enemy=final_enemy
+				jugador.limite_derecho=950
 
 
 			#informacion del tiempo
@@ -598,6 +602,45 @@ if __name__ == '__main__':
 			pygame.display.flip()
 
 			clock.tick(30)
+	
+		if (jugador.vida<=0 or condicion3) or (tiempo<=0):
+			musica_fondo.set_volume(0)
+			jugador.sonido_herido.set_volume(0)
+			perder=pygame.mixer.Sound("./data/music/perder.ogg")
+			perder.play()
+			time.sleep(4)
+			pantalla.fill(NEGRO)
+			texto=fuente.render('GAME OVER',True, ROJO)
+			pantalla.blit(texto,[400,300])
+			pygame.display.flip()
+			hmm=pygame.mixer.Sound("./data/music/mmm.ogg")
+			hmm.play()
+			time.sleep(1)
+		elif fin:
+			pantalla.fill(NEGRO)
+			pygame.display.flip()
+			musica_fondo.set_volume(0)
+			adios=pygame.mixer.Sound("./data/music/mama-mia.ogg")
+			adios.play()
+			time.sleep(2)
+		else:
+			musica_fondo.set_volume(0)
+			musica_ganar=pygame.mixer.Sound("./data/music/ganar.ogg")
+			musica_ganar.play()
+			time.sleep(7)
+			fuego=pygame.mixer.Sound("./data/music/fuegos.ogg")
+			for i in range(3):
+				fuego.play()
+				time.sleep(0.55)
+			pantalla.fill(NEGRO)
+			pygame.display.flip()
+			time.sleep(2)
+			pantalla.blit(fondo,[0,0])
+			pantalla.blit(mario_historia,[750,200])
+			texto_fin='GANASTE, GRACIAS POR JUGAR!'
+			texto_fin=fuente.render(texto_fin,True, BLANCO)
+			pantalla.blit(texto_fin,[300,300])
+			pygame.display.flip()
 
 	
 	while not fin:

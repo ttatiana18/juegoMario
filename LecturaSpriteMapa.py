@@ -59,6 +59,7 @@ class LecturaSpriteMapa():
 		all_sprites = pygame.sprite.Group()
 		all_generadores_caracoles = pygame.sprite.Group()
 		all_plantas_enemies = pygame.sprite.Group()
+		vencedor= pygame.sprite.Group()
 		if mapa == 1:
 			filas=self.filas_mapa
 		elif mapa == 2:
