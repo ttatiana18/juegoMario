@@ -49,6 +49,7 @@ class Jugador(pygame.sprite.Sprite):
 		self.muerto=False
 		self.colisionando_v=False 
 		self.cambio=False
+		self.limite_derecho=850
 
 	def gravedad(self,cte):
 		if self.vel_y==0:
@@ -71,12 +72,12 @@ class Jugador(pygame.sprite.Sprite):
 			self.rect.x = LIMITE_IZ
 			self.b_vel_x=(-self.vel_x)
 			self.f_vel_x = -self.vel_x
-		if self.rect.x > LIMITE_DER:
-			self.rect.x = LIMITE_DER
+		if self.rect.x > self.limite_derecho:
+			self.rect.x = self.limite_derecho
 			self.b_vel_x=(-self.vel_x)
 			self.f_vel_x = -self.vel_x
 
-		if self.vel_x!=0 and (self.rect.x==LIMITE_IZ or self.rect.x==LIMITE_DER):
+		if self.vel_x!=0 and (self.rect.x==LIMITE_IZ or self.rect.x==self.limite_derecho):
 			if ((self.f_x+self.f_vel_x) < 0) and  (self.f_x+self.f_vel_x>self.ancho-self.f_ancho): #condicion para que se muevan dentro del tamaño del fondo
 				self.all_b_sprite.update(self.b_vel_x)
 				self.f_x +=self.f_vel_x

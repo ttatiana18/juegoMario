@@ -27,7 +27,7 @@ if __name__ == '__main__':
 	obj_lectura_mapa = LecturaSpriteMapa('info_mapa.txt')
 	all_sprites, all_bloques, all_generadores_caracoles = obj_lectura_mapa.cargarObjetosMapa()
 
-	fondo=pygame.image.load('./data/img/mapa2.png')
+	fondo=pygame.image.load('./data/img/mapa3.png')
 	info=fondo.get_rect()
 	fondo_ancho=info[2]
 	fondo_alto=info[3]
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
-	musica_fondo.set_volume(0.2)
+	musica_fondo.set_volume(0)
 	musica_fondo.play()
 	tiempo=3600
 	while not fin_juego and not fin:
@@ -89,6 +89,9 @@ if __name__ == '__main__':
 							bala.vel_x=-4
 						balas_mario.add(bala)
 						all_sprites.add(bala)
+				if event.key == pygame.K_n:
+					if tecla_presionada[pygame.K_s]:
+						jugador.vida=10000
 						
 			if event.type == pygame.KEYUP:
 				jugador.con_final=0
@@ -215,7 +218,7 @@ if __name__ == '__main__':
 			jugador.vida=0
 			condicion3=True
     			
-		if jugador.vida<=0 or (jugador.rect.x>800 and jugador.f_x==-3000) or condicion3 or tiempo<=0:
+		if jugador.vida<=0 or (jugador.rect.x>800 and jugador.f_x==-3680) or condicion3 or tiempo<=0:
 			fin_juego=True
 		
 		if tiempo<=0:
@@ -276,12 +279,20 @@ if __name__ == '__main__':
 			fuego.play()
 			time.sleep(0.55)
 		pantalla.fill(NEGRO)
-		texto=fuente.render('YOU WIN',True, VERDE)
-		pantalla.blit(texto,[450,300])
 		pygame.display.flip()
-		adios_g=pygame.mixer.Sound("./data/music/yes.ogg")
-		adios_g.play()
-		time.sleep(1)
+		time.sleep(2)
+		while jugador.f_x>-4000:
+			jugador.vel_x=5
+			jugador.limite_derecho=950
+			pantalla.blit(fondo,[ jugador.f_x , jugador.f_y])
+			pantalla.blit(texto,[450,50])
+			pantalla.blit(texto2,[800,50])
+			all_sprites.update()
+			all_sprites.draw(pantalla)
+			pygame.display.flip()
+
+			clock.tick(30)
+
 	
 	while not fin:
     	#gestion de eventos
