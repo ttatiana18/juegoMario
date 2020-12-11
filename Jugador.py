@@ -124,6 +124,12 @@ class Jugador(pygame.sprite.Sprite):
 		self.rect.y += self.vel_y
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
 		for bloque in bloque_hit_list:
+			if bloque.tipo_b==3:
+				self.vida-=5
+				self.sonido_herido.play()
+			if bloque.tipo_b==4:
+				self.vida=0
+				self.sonido_herido.play()
 			if self.vel_y > 0: 
 				if (self.rect.bottom > (bloque.rect.top-20)) and (self.rect.bottom < (bloque.rect.top+20)):
 					self.rect.bottom=bloque.rect.top

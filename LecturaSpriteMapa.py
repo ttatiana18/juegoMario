@@ -3,6 +3,8 @@ import pygame
 from Bloque import Bloque
 from Planta_enemiga import Planta_enemiga
 from Bloque_especial import Bloque_especial
+from Bloque_lava import Bloque_lava
+from Lava import Lava
 from Generador_hongos import Generador_hongos
 from Generador_caracol import Generador_caracol
 
@@ -65,6 +67,14 @@ class LecturaSpriteMapa():
 					bloque_e= Bloque_especial([indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(bloque_e)
 					all_sprites.add(bloque_e)
+				if dato=="s": # bloque lava
+					bloque_l= Bloque_lava(self.lista_obj_sprite[dato],[indice_col*self.an_sprites, indice_fil*self.al_sprites])
+					all_bloque_sprites.add(bloque_l)
+					all_sprites.add(bloque_l)
+				if dato=="l": # lava
+					lava=Lava(self.lista_obj_sprite[dato],[indice_col*self.an_sprites, indice_fil*self.al_sprites])
+					all_bloque_sprites.add(lava)
+					all_sprites.add(lava)
 				if dato=="G": # generador de hongos
 					generador= Generador_hongos(self.lista_obj_sprite[dato],[indice_col*self.an_sprites, indice_fil*self.al_sprites])
 					all_bloque_sprites.add(generador)
