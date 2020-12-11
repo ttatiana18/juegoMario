@@ -121,7 +121,7 @@ class Jugador(pygame.sprite.Sprite):
 				self.all_plantas.update(0,self.b_vel_y)
 				self.all_plantas_enemies.update(0,self.b_vel_y)
 		
-
+		print(self.f_y,self.f_x)
 		self.rect.y += self.vel_y
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
 		for bloque in bloque_hit_list:
@@ -131,8 +131,7 @@ class Jugador(pygame.sprite.Sprite):
 			if bloque.tipo_b==4 and not self.truco:
 				self.vida=0
 				self.sonido_herido.play()
-			if self.vel_y > 0:
-				print(self.f_y,self.f_x) 
+			if self.vel_y > 0: 
 				if ((self.rect.bottom > (bloque.rect.top-20)) and (self.rect.bottom < (bloque.rect.top+20))) or (self.rect.bottom > (bloque.rect.top-40)) and (self.rect.bottom < (bloque.rect.top+40)):
 					self.rect.bottom=bloque.rect.top
 					self.vel_y=0
