@@ -57,6 +57,14 @@ fil:0
 ancho:1
 alto:1
 
+[B]
+tipo:muro oscuro
+col:0
+fil:2
+ancho:1
+alto:1
+
+
 [a]
 tipo:bloque
 col:1
@@ -64,12 +72,28 @@ fil:0
 ancho:1
 alto:1
 
+[A]
+tipo:bloque
+col:1
+fil:2
+ancho:1
+alto:1
+
+
 [e]
 tipo:bloque especial
 col:24
 fil:0
 ancho:1
 alto:1
+
+[E]
+tipo:bloque especial
+col:24
+fil:2
+ancho:1
+alto:1
+
 
 
 [T]
@@ -92,3 +116,4 @@ col:2
 fil:8
 ancho:3
 alto:2
+

@@ -1,22 +1,25 @@
 import pygame
 from lib_juegos import *
 
-class Jugador(pygame.sprite.Sprite):
+class FinalEnemy(pygame.sprite.Sprite):
 	"""docstring for Nave"""
 	def __init__(self, all_bloques, pos):
 		super().__init__()
-        self.m=Recorte("./data/img/enemies.png",15,12)
-        self.con=0
-        self.image=self.m[0][self.con]
-        self.image.set_colorkey((0,0,0))
-        self.rect = self.image.get_rect()
-        self.all_b_sprite=all_bloques
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
-        self.vel_x = 2
-        self.vel_y = 0
-        self.temp=0
-        self.aplastado=False
+		self.m=Recorte("./data/img/bowser.png",8,1)
+		self.con=0
+		self.dir = 0
+		self.image=self.m[0][self.con]
+		self.image.set_colorkey((0,0,0))
+		self.rect = self.image.get_rect()
+		self.all_b_sprite=all_bloques
+		self.rect.x = pos[0]
+		self.rect.y = pos[1]
+		self.vel_x = 2
+		self.vel_y = 0
+		self.temp = 0
+		self.vivo = False
+		self.limiteD=self.rect.right + 200
+		self.limiteI=self.rect.left - 50
 
 	def gravedad(self,cte):
 		if self.vel_y==0:
@@ -25,232 +28,44 @@ class Jugador(pygame.sprite.Sprite):
 			self.vel_y+=cte
 
 	def update(self):
-    		
 
-		if self.vida<=0 and not self.muerto:
-			self.image=pygame.image.load("./data/img/marioMuerto.png")
-			self.image.set_colorkey((0,0,0))
-			self.rect.y-=30
-			self.muerto=True
-			self.vida-=1
-    		    		
-		#movimiento horizontal
-		if self.rect.x < LIMITE_IZ:
-			self.rect.x = LIMITE_IZ
-			self.b_vel_x=(-self.vel_x)
-			self.f_vel_x = -self.vel_x
-		if self.rect.x > LIMITE_DER:
-			self.rect.x = LIMITE_DER
-			self.b_vel_x=(-self.vel_x)
-			self.f_vel_x = -self.vel_x
+		if(self.rect.left<=self.limiteI):
+			self.vel_x=2
+		elif self.rect.right>=self.limiteD:
+			self.vel_x=-2
 
-		if self.vel_x!=0 and (self.rect.x==LIMITE_IZ or self.rect.x==LIMITE_DER):
-			if ((self.f_x+self.f_vel_x) < 0) and  (self.f_x+self.f_vel_x>self.ancho-self.f_ancho): #condicion para que se muevan dentro del tamaño del fondo
-				self.all_b_sprite.update(self.b_vel_x)
-				self.f_x +=self.f_vel_x
-				self.all_enemies.update(self.b_vel_x)
-				self.all_enemies_caracol.update(self.b_vel_x)
-				self.all_plantas.update(self.b_vel_x)
-			elif ((self.f_x+self.f_vel_x) >= (self.ancho-self.f_ancho)) and self.f_x!=0:
-				self.all_b_sprite.update(self.b_vel_x)
-				self.f_x +=self.f_vel_x
-				self.all_enemies.update(self.b_vel_x)
-				self.all_enemies_caracol.update(self.b_vel_x)
-				self.all_plantas.update(self.b_vel_x)
-
-		#movimiento vertical
-		if self.rect.y < LIMITE_SUP:
-			self.rect.y = LIMITE_SUP
-			self.b_vel_y=-self.vel_y
-			self.f_vel_y = -self.vel_y
-		if self.rect.y > LIMITE_INF:
-			self.rect.y = LIMITE_INF
-			self.b_vel_y=-self.vel_y
-			self.f_vel_y =-self.vel_y
-
-		if self.vel_y!=0 and (self.rect.y==LIMITE_SUP or self.rect.y==LIMITE_INF):
-			if ((self.f_y+self.f_vel_y) > self.alto-self.f_alto) and self.f_y<=0: #condicion para que se muevan dentro del tamaño del fondo
-				self.all_b_sprite.update(0,self.b_vel_y)
-				self.f_y +=self.f_vel_y
-				self.all_enemies.update(0,self.b_vel_y)
-				self.all_enemies_caracol.update(0,self.b_vel_y)
-				self.all_plantas.update(0,self.b_vel_y)
-			elif ((self.f_y+self.f_vel_y) < 0) and (self.f_y>self.alto-self.f_alto):
-				self.all_b_sprite.update(0,self.b_vel_y)
-				self.f_y +=self.f_vel_y
-				self.all_enemies.update(0,self.b_vel_y)
-				self.all_enemies_caracol.update(0,self.b_vel_y)
-				self.all_plantas.update(0,self.b_vel_y)
+		self.rect.x += self.vel_x
 		
-
 		self.rect.y += self.vel_y
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
 		for bloque in bloque_hit_list:
-			if self.vel_y > 0: 
-				if (self.rect.bottom > (bloque.rect.top-20)) and (self.rect.bottom < (bloque.rect.top+20)):
-					self.rect.bottom=bloque.rect.top
-					self.vel_y=0
-					self.saltar=False
-			elif self.vel_y < 0:
-				if self.rect.top < bloque.rect.bottom:
-					self.rect.top = bloque.rect.bottom
-					self.vel_y=0
-					bloque.golpear()
+		    if self.vel_y > 0: 
+		        if self.rect.bottom > bloque.rect.top:
+		            self.rect.bottom=bloque.rect.top
+		            self.vel_y=0
+		            self.saltar=False
+		    elif self.vel_y < 0:
+		        if self.rect.top < bloque.rect.bottom:
+		            self.rect.top = bloque.rect.bottom
+		            self.vel_y=0
 
-		if not self.muerto:
-			self.rect.x += self.vel_x
-			bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
-			for bloque in bloque_hit_list:
-				if self.vel_x==0:
-					if (self.rect.top<=bloque.rect.bottom) and (self.rect.left<=bloque.rect.right) and self.rect.x>bloque.rect.x:
-						self.rect.left=bloque.rect.right
-						self.colisionando_v=True
-					elif (self.rect.top<=bloque.rect.bottom)and (self.rect.right>=bloque.rect.left):
-						self.rect.right=bloque.rect.left
-						self.colisionando_v=True
-				elif self.vel_x >0: 
-					if (self.rect.top<=bloque.rect.bottom)and (self.rect.right>=bloque.rect.left):
-						self.rect.right = bloque.rect.left
-						self.vel_x=0
-				elif self.vel_x<0: 
-					if (self.rect.top<=bloque.rect.bottom)and (self.rect.left<=bloque.rect.right):
-						self.rect.left = bloque.rect.right
-						self.vel_x=0
+		if(self.vel_x > 0):
+			self.dir = 0
 
-		modificador_hit_list = pygame.sprite.spritecollide(self, self.all_modificadores, True)
-		for modificador in modificador_hit_list:
-			self.cambio=True
-			if modificador.tipo==1:
-				self.fila=0
-				self.estado=1
-				modificador.sonar()
-			elif modificador.tipo==2:
-				self.vida+=100
-				modificador.sonar()
-			elif modificador.tipo==3:
-				self.fila=0
-				if self.dir==1:
-					self.con_ini=10
-				else:
-					self.con_ini=6
-				self.con_final=0
-				self.estado=2
-				self.rect.bottom=modificador.rect.top
-				modificador.sonar()
-
-		enemies_hit_list = pygame.sprite.spritecollide(self, self.all_enemies, False)
-		for enemigo in enemies_hit_list:
-			if (self.rect.bottom<enemigo.rect.top+10) and not self.muerto:
-				enemigo.aplastado=True
-				self.sonido_matar_enemigo.play()
-			elif (self.rect.right >= enemigo.rect.left or self.rect.left <= enemigo.rect.right) and not self.muerto:
-				self.sonido_herido.play()
-				if(self.rect.right >= enemigo.rect.left and self.rect.x<enemigo.rect.x):
-					self.rect.right = enemigo.rect.left
-					self.vel_x = 0
-					if self.colisionando_v:
-						enemigo.rect.left=self.rect.right
-						enemigo.vel_x=2
-						self.colisionando_v=False
-				elif (self.rect.left <= enemigo.rect.right and self.rect.x>enemigo.rect.x):
-					self.rect.left = enemigo.rect.right
-					self.vel_x = 0
-					if self.colisionando_v:
-						enemigo.rect.right=self.rect.left
-						enemigo.vel_x=-2
-						self.colisionando_v=False
-				if self.estado==0:
-					self.vida-=10
-				elif self.estado==1:
-					self.estado=0
-					self.vida-=5
-				elif self.estado==2:
-					self.estado=1
-					self.vida-=2
-
-		enemies_caracoles_hit_list = pygame.sprite.spritecollide(self, self.all_enemies_caracol, False)
-		for enemigo in enemies_caracoles_hit_list:
-			if not self.muerto:
-				self.sonido_herido.play()
-				if(self.rect.right >= enemigo.rect.left and self.rect.x<enemigo.rect.x):
-					self.rect.right = enemigo.rect.left
-					self.vel_x = 0
-					if self.colisionando_v:
-						enemigo.rect.left=self.rect.right
-						enemigo.vel_x=2
-						self.colisionando_v=False
-				elif (self.rect.left <= enemigo.rect.right and self.rect.x>enemigo.rect.x):
-					self.rect.left = enemigo.rect.right
-					self.vel_x = 0
-					if self.colisionando_v:
-						enemigo.rect.right=self.rect.left
-						enemigo.vel_x=-2
-						self.colisionando_v=False
-				elif(self.rect.top>=enemigo.rect.bottom and (self.rect.x==enemigo.rect.x)):
-					enemigo.rect.bottom=self.rect.top
-				if self.estado==0:
-					self.vida-=10
-				elif self.estado==1:
-					self.estado=0
-					self.vida-=5
-				elif self.estado==2:
-					self.estado=1
-					self.vida-=2
-		
-		if self.estado==0:
-			self.sabana=self.m
-			self.rect[2]=24
-			self.rect[3]=27
-			self.num_sprites=2
-			self.cambio=False
-		elif self.estado==1:
-			self.sabana=self.m2
-			self.rect[2]=24
-			self.rect[3]=51
-			self.num_sprites=2
-			if self.cambio:
-				self.rect.y-=50
-			self.cambio=False
 		else:
-			self.sabana=self.m3
-			self.rect[2]=38
-			self.rect[3]=56
-			self.num_sprites=1
-			self.cambio=False
-    		
+			self.dir = 1
 
-		if not self.muerto:		
-			self.image=self.sabana[self.fila][self.con_ini] #aqui se cambia el sprite
-			#animacion del sprite en x
-			if self.vel_x !=0 :
-				if self.con_ini<self.con_final:
-					self.con_ini+=self.num_sprites
-				else:
-					self.con_ini-=self.num_sprites
+
+		if(self.vel_x != 0 or self.vel_y != 0):
+			if self.con < 3 and (self.dir == 0):
+				self.image = self.m[0][self.con+4]
+				self.con += 1
+			elif self.con < 3 and (self.dir == 1):
+				self.image = self.m[0][self.con]
+				self.con += 1
+
 			else:
-				if self.dir==1:
-					if self.estado==1 or self.estado==0:
-						self.con_ini=14
-					else:
-						self.con_ini=10
-				else: 
-					if self.estado==1 or self.estado==0:
-						self.con_ini=12
-					else:
-						self.con_ini=6
-
-			#animacion del sprite en y
-			if self.vel_y !=0:
-				if self.dir==1:
-					if self.estado==1 or self.estado==0:
-						self.image=self.sabana[self.fila][24]
-					else:
-						self.image=self.sabana[self.fila][15]
-				elif self.dir==2:
-					if self.estado==1 or self.estado==0:
-						self.image=self.sabana[self.fila][2]
-					else:
-						self.image=self.sabana[self.fila][1]
+				self.con = 0
 
 
 		self.gravedad(1)

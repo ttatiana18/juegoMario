@@ -10,6 +10,7 @@ from Caracol import Caracol
 from Bala import Bala
 from Hongo_enemigo import Hongo_enemigo
 from lib_juegos import *
+from FinalBoss import *
 import time
 ANCHO=1000
 ALTO=568
@@ -43,6 +44,11 @@ if __name__ == '__main__':
 	fuente=pygame.font.Font(None,32)
 	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
+
+
+	bowser = FinalEnemy(all_bloques, [f_x + 60, f_y])
+	all_sprites.add(bowser)
+
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
 	musica_fondo.set_volume(0.2)
 	musica_fondo.play()
