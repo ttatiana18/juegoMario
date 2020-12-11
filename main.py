@@ -33,17 +33,15 @@ if __name__ == '__main__':
 	tuberia=pygame.image.load('./data/img/tubo.png')
 	mario_inicio=pygame.image.load('./data/img/inicio.jpg')
 	mario_historia=pygame.image.load('./data/img/mario_historia.png')
+	instrucciones=pygame.image.load('./data/img/instrucciones.png')
+	instrucciones=pygame.transform.scale(instrucciones, (415,300))
 	mario_historia=pygame.transform.scale(mario_historia, (200,340))
 	inicio=pygame.transform.scale(mario_inicio, (415,205))
 	fuente=pygame.font.Font(None,32)
 	indicacion1='PRESIONA ENTER'
-	historia='hola que tal'
 	indicacion2='PRESIONA ENTER PARA CONTINUAR'
-	instrucciones='1. hola'
-	text_history=fuente.render(historia,True, BLANCO)
 	text_info=fuente.render(indicacion1,True, BLANCO)
 	text_info2=fuente.render(indicacion2,True, BLANCO)
-	text_instrucciones=fuente.render(instrucciones,True, BLANCO)
 	info=fondo.get_rect()
 	fondo_ancho=info[2]
 	fondo_alto=info[3]
@@ -65,9 +63,8 @@ if __name__ == '__main__':
 					musica_historia.play()
 					pantalla.blit(fondo,[0,0])
 					pantalla.blit(mario_historia,[750,200])
-					pygame.draw.rect(pantalla,NEGRO,(300,200,415,205))
-					pantalla.blit(text_history,[350,250])
-					pantalla.blit(text_info2,[300,430])
+					pantalla.blit(instrucciones,[300,180])
+					pantalla.blit(text_info2,[300,500])
 					pygame.display.flip()
 					fin_inicio=True
 
@@ -80,7 +77,6 @@ if __name__ == '__main__':
 				if event.key == pygame.K_p:
 					pantalla.blit(fondo,[0,0])
 					pygame.draw.rect(pantalla,NEGRO,(300,200,415,205))
-					pantalla.blit(text_instrucciones,[350,250])
 					pygame.display.flip()
 					time.sleep(3)
 					fin_inicio=True
@@ -96,10 +92,6 @@ if __name__ == '__main__':
 
 	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
-
-
-	bowser = FinalEnemy(all_bloques, [f_x + 60, f_y])
-	all_sprites.add(bowser)
 
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
 	musica_fondo.set_volume(0)
