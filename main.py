@@ -34,7 +34,9 @@ if __name__ == '__main__':
 	mario_inicio=pygame.image.load('./data/img/inicio.jpg')
 	mario_historia=pygame.image.load('./data/img/mario_historia.png')
 	instrucciones=pygame.image.load('./data/img/instrucciones.png')
-	instrucciones=pygame.transform.scale(instrucciones, (415,300))
+	historia=pygame.image.load('./data/img/historia.png')
+	historia=pygame.transform.scale(historia, (415,300))
+	instrucciones=pygame.transform.scale(instrucciones, (415,320))
 	mario_historia=pygame.transform.scale(mario_historia, (200,340))
 	inicio=pygame.transform.scale(mario_inicio, (415,205))
 	fuente=pygame.font.Font(None,32)
@@ -52,18 +54,17 @@ if __name__ == '__main__':
 	pantalla.blit(inicio,[300,200])
 	pantalla.blit(text_info,[400,430])
 	pygame.display.flip()
-
+	musica_historia=pygame.mixer.Sound("./data/music/inicio.ogg")
 	while not fin_inicio:	
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				fin_inicio=True
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_p:
-					musica_historia=pygame.mixer.Sound("./data/music/inicio.ogg")
 					musica_historia.play()
 					pantalla.blit(fondo,[0,0])
 					pantalla.blit(mario_historia,[750,200])
-					pantalla.blit(instrucciones,[300,180])
+					pantalla.blit(historia,[300,180])
 					pantalla.blit(text_info2,[300,500])
 					pygame.display.flip()
 					fin_inicio=True
@@ -76,9 +77,10 @@ if __name__ == '__main__':
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_p:
 					pantalla.blit(fondo,[0,0])
-					pygame.draw.rect(pantalla,NEGRO,(300,200,415,205))
+					pantalla.blit(mario_historia,[750,200])
+					pantalla.blit(instrucciones,[300,160])
 					pygame.display.flip()
-					time.sleep(3)
+					time.sleep(6)
 					fin_inicio=True
 								
 	musica_historia.set_volume(0)
