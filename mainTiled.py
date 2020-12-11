@@ -64,15 +64,8 @@ if __name__ == '__main__':
 	    	blockers.append(new_rect)
 
 
-	all_modificadores=pygame.sprite.Group()
-	all_plantas=pygame.sprite.Group()
-	all_enemies_caracol=pygame.sprite.Group()
-	all_enemies=pygame.sprite.Group()
-	balas_mario=pygame.sprite.Group()
-
 	fuente=pygame.font.Font(None,32)
-	jugador = Jugador(blockers, all_enemies, all_enemies_caracol, all_plantas, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
-	all_sprites.add(jugador)
+	
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
 	musica_fondo.set_volume(0.2)
 	musica_fondo.play()
@@ -82,113 +75,8 @@ if __name__ == '__main__':
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				fin=True
-			if event.type == pygame.KEYDOWN:
-				tecla_presionada=pygame.key.get_pressed()
-				if event.key == pygame.K_RIGHT:
-					if jugador.estado==1 or jugador.estado==0:
-						jugador.con_ini=14
-						jugador.con_final=20
-					else:
-						jugador.con_ini=10
-						jugador.con_final=12
-					jugador.vel_x = 5
-					jugador.dir=1
-				if event.key == pygame.K_LEFT:
-					if jugador.estado==1 or jugador.estado==0:
-						jugador.con_ini=12
-						jugador.con_final=7
-					else:
-						jugador.con_ini=6
-						jugador.con_final=4
-					jugador.vel_x = -5
-					jugador.dir=2
-				if event.key == pygame.K_UP:
-					if not(jugador.saltar):
-						jugador.vel_y = -14
-						jugador.saltar=True
-						jugador.sonidoSaltar()
-				if event.key == pygame.K_x:
-					if jugador.estado == 2:
-						posicion=[(jugador.rect.x),jugador.rect.bottom-50]
-						bala=Bala(posicion)
-						if tecla_presionada[pygame.K_UP]:
-							bala.vel_y=-8
-						elif jugador.con_ini==14 or jugador.con_ini==10:
-							bala.vel_x=4
-						elif jugador.con_ini==12 or jugador.con_ini==6:
-							bala.vel_x=-4
-						balas_mario.add(bala)
-						all_sprites.add(bala)
-						
-			if event.type == pygame.KEYUP:
-				jugador.con_final=0
-				if event.key == pygame.K_RIGHT and jugador.vel_x != 0 :
-					jugador.vel_x = 0
-					jugador.f_vel_x = 0
-					if jugador.estado==1 or jugador.estado==0:
-						jugador.con_ini=14
-					else:
-						jugador.con_ini=10
-					jugador.con_final=0
-				if event.key == pygame.K_LEFT and jugador.vel_x != 0 :
-					jugador.vel_x = 0
-					jugador.f_vel_x = 0
-					if jugador.estado==1 or jugador.estado==0:
-						jugador.con_ini=12
-					else: 
-						jugador.con_ini=6
-					jugador.con_final=0
-				if event.key != pygame.K_UP:
-					jugador.vel_x=0
-				if event.key == pygame.K_UP and jugador.vel_x>0:
-					if jugador.estado==1 or jugador.estado==0:
-						jugador.con_ini=14
-						jugador.con_final=20
-					else:
-						jugador.con_ini=10
-						jugador.con_final=12
-					jugador.vel_y = 0
-					jugador.f_vel_y = 0
-				if event.key == pygame.K_UP and jugador.vel_x<0:
-					if jugador.estado==1 or jugador.estado==0:
-						jugador.con_ini=12
-						jugador.con_final=7
-					else:
-						jugador.con_ini=6
-						jugador.con_final=4
-					jugador.vel_y = 0
-					jugador.f_vel_y = 0
+			
 
-		for bloque_e in all_bloques:
-			if bloque_e.tipo_b==1:
-				if bloque_e.activa and bloque_e.golpeada:
-					if bloque_e.tipo_m == 1 or bloque_e.tipo_m == 2:
-						hongo=Hongo(all_bloques,[bloque_e.rect.x,bloque_e.rect.top-32],bloque_e.tipo_m)
-						all_sprites.add(hongo)
-						all_modificadores.add(hongo)
-					else:
-						planta=Planta([bloque_e.rect.x,bloque_e.rect.top-32])
-						all_sprites.add(planta)
-						all_modificadores.add(planta)
-						all_plantas.add(planta)
-					bloque_e.activa=False
-			elif bloque_e.tipo_b==2:
-				if bloque_e.temp<0:
-					if bloque_e.cont<10:
-						hongo=Hongo_enemigo(all_bloques,[bloque_e.rect.x,bloque_e.rect.y])   
-						hongo.vel_x=2             
-						all_enemies.add(hongo)
-						all_sprites.add(hongo)
-						bloque_e.temp=200
-						bloque_e.cont+=1
-
-		for enemigo_generador in all_generadores_caracoles:
-			if enemigo_generador.temp<0:
-				caracol=Caracol(all_bloques,[enemigo_generador.rect.x,enemigo_generador.rect.bottom])
-				caracol.vel_x=2    
-				all_enemies_caracol.add(caracol)
-				all_sprites.add(caracol)
-				enemigo_generador.temp=200
 
 		for bala in balas_mario:
 			balas_hit_enemies=pygame.sprite.spritecollide(bala,all_enemies,True)
