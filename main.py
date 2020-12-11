@@ -550,8 +550,16 @@ if __name__ == '__main__':
 			jugador.all_plantas=all_plantas
 			
 			#condiciones de fin de juego
-
-					
+			print('.........')
+			if jugador.f_y<-131 and jugador.vel_y>0 and (jugador.f_x<-100 and jugador.f_x>-1000):
+				jugador.vida=0
+				condicion3=True
+			elif jugador.f_y<-500 and jugador.vel_y>0 and (jugador.f_x<-1254 and jugador.f_x>-2160):
+				jugador.vida=0
+				condicion3=True
+			elif jugador.f_y<-745 and jugador.vel_y>0 and (jugador.f_x<-2405 and jugador.f_x>-2790):
+				jugador.vida=0
+				condicion3=True
 			if jugador.vida<=0 or (jugador.rect.x>800 and jugador.f_x==-3680) or condicion3 or tiempo<=0:
 				fin_juego=True
 			
