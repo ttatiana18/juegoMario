@@ -574,7 +574,7 @@ if __name__ == '__main__':
 
 			#Bowser
 			if(jugador.f_x <= -3200 and (not isaliveFinal)):
-				bowser = FinalEnemy(all_bloques, [800,160])
+				bowser = FinalEnemy(all_bloques, [900,160])
 				all_sprites.add(bowser)
 				final_enemy.add(bowser)
 				print(bowser.rect.x)
@@ -639,7 +639,7 @@ if __name__ == '__main__':
 			pantalla.blit(mario_historia,[750,200])
 			texto_fin='GANASTE, GRACIAS POR JUGAR!'
 			texto_fin=fuente.render(texto_fin,True, BLANCO)
-			pantalla.blit(texto_fin,[300,300])
+			pantalla.blit(texto_fin,[300,200])
 			pygame.display.flip()
 
 	
