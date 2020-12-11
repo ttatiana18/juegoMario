@@ -98,7 +98,7 @@ if __name__ == '__main__':
 	all_sprites.add(jugador)
 
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
-	musica_fondo.set_volume(0)
+	musica_fondo.set_volume(0.2)
 	musica_fondo.play()
 	tiempo=3600
 	while not fin_juego and not fin:
