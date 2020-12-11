@@ -13,6 +13,7 @@ from lib_juegos import *
 import time
 ANCHO=1000
 ALTO=568
+#nuevo tamaño de fondo
 
 if __name__ == '__main__': 
     
