@@ -28,6 +28,7 @@ if __name__ == '__main__':
 	all_sprites, all_bloques, all_generadores_caracoles = obj_lectura_mapa.cargarObjetosMapa()
 
 	fondo=pygame.image.load('./data/img/mapa3.png')
+	tuberia=pygame.image.load('./data/img/tubo.png')
 	info=fondo.get_rect()
 	fondo_ancho=info[2]
 	fondo_alto=info[3]
@@ -284,11 +285,13 @@ if __name__ == '__main__':
 		while jugador.f_x>-4000:
 			jugador.vel_x=5
 			jugador.limite_derecho=950
-			pantalla.blit(fondo,[ jugador.f_x , jugador.f_y])
+			pantalla.blit(fondo,[4000, -708])
+			print(jugador.f_x , jugador.f_y)
 			pantalla.blit(texto,[450,50])
 			pantalla.blit(texto2,[800,50])
 			all_sprites.update()
 			all_sprites.draw(pantalla)
+			pantalla.blit(tuberia,[900,400])
 			pygame.display.flip()
 
 			clock.tick(30)
