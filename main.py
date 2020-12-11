@@ -22,6 +22,7 @@ if __name__ == '__main__':
 	pantalla=pygame.display.set_mode([ANCHO,ALTO])
 	fin=False
 	fin_juego=False
+	fin_inicio=False
 	condicion3=False
 
 	obj_lectura_mapa = LecturaSpriteMapa('info_mapa.txt')
@@ -29,11 +30,62 @@ if __name__ == '__main__':
 
 	fondo=pygame.image.load('./data/img/mapa3.png')
 	tuberia=pygame.image.load('./data/img/tubo.png')
+	mario_inicio=pygame.image.load('./data/img/inicio.jpg')
+	mario_historia=pygame.image.load('./data/img/mario_historia.png')
+	mario_historia=pygame.transform.scale(mario_historia, (200,340))
+	inicio=pygame.transform.scale(mario_inicio, (415,205))
+	fuente=pygame.font.Font(None,32)
+	indicacion1='PRESIONA ENTER'
+	historia='hola que tal'
+	indicacion2='PRESIONA ENTER PARA CONTINUAR'
+	instrucciones='1. hola'
+	text_history=fuente.render(historia,True, BLANCO)
+	text_info=fuente.render(indicacion1,True, BLANCO)
+	text_info2=fuente.render(indicacion2,True, BLANCO)
+	text_instrucciones=fuente.render(instrucciones,True, BLANCO)
 	info=fondo.get_rect()
 	fondo_ancho=info[2]
 	fondo_alto=info[3]
 	f_x = 0
 	f_y = 0
+
+	pantalla.blit(fondo,[0,0])
+	pantalla.blit(inicio,[300,200])
+	pantalla.blit(text_info,[400,430])
+	pygame.display.flip()
+
+	while not fin_inicio:	
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				fin_inicio=True
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_p:
+					musica_historia=pygame.mixer.Sound("./data/music/inicio.ogg")
+					musica_historia.play()
+					pantalla.blit(fondo,[0,0])
+					pantalla.blit(mario_historia,[750,200])
+					pygame.draw.rect(pantalla,NEGRO,(300,200,415,205))
+					pantalla.blit(text_history,[350,250])
+					pantalla.blit(text_info2,[300,430])
+					pygame.display.flip()
+					fin_inicio=True
+
+	fin_inicio=False
+	while not fin_inicio:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				fin_inicio=True
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_p:
+					pantalla.blit(fondo,[0,0])
+					pygame.draw.rect(pantalla,NEGRO,(300,200,415,205))
+					pantalla.blit(text_instrucciones,[350,250])
+					pygame.display.flip()
+					time.sleep(3)
+					fin_inicio=True
+								
+	musica_historia.set_volume(0)
+			
 
 	all_modificadores=pygame.sprite.Group()
 	all_plantas=pygame.sprite.Group()
@@ -41,7 +93,6 @@ if __name__ == '__main__':
 	all_enemies=pygame.sprite.Group()
 	balas_mario=pygame.sprite.Group()
 
-	fuente=pygame.font.Font(None,32)
 	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
