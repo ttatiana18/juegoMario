@@ -282,16 +282,17 @@ if __name__ == '__main__':
 		pantalla.fill(NEGRO)
 		pygame.display.flip()
 		time.sleep(2)
-		while jugador.f_x>-4000:
+		jugador.rect.x=500
+		while jugador.f_x>-3850:
 			jugador.vel_x=5
 			jugador.limite_derecho=950
-			pantalla.blit(fondo,[4000, -708])
+			pantalla.blit(fondo,[-4000, -708])
 			print(jugador.f_x , jugador.f_y)
 			pantalla.blit(texto,[450,50])
 			pantalla.blit(texto2,[800,50])
 			all_sprites.update()
 			all_sprites.draw(pantalla)
-			pantalla.blit(tuberia,[900,400])
+			pantalla.blit(tuberia,[600,400])
 			pygame.display.flip()
 
 			clock.tick(30)
