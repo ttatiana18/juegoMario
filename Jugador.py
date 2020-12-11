@@ -51,6 +51,7 @@ class Jugador(pygame.sprite.Sprite):
 		self.colisionando_v=False 
 		self.cambio=False
 		self.limite_derecho=850
+		self.truco=False
 
 	def gravedad(self,cte):
 		if self.vel_y==0:
@@ -124,10 +125,10 @@ class Jugador(pygame.sprite.Sprite):
 		self.rect.y += self.vel_y
 		bloque_hit_list = pygame.sprite.spritecollide(self, self.all_b_sprite, False)
 		for bloque in bloque_hit_list:
-			if bloque.tipo_b==3:
+			if bloque.tipo_b==3 and not self.truco:
 				self.vida-=5
 				self.sonido_herido.play()
-			if bloque.tipo_b==4:
+			if bloque.tipo_b==4 and not self.truco:
 				self.vida=0
 				self.sonido_herido.play()
 			if self.vel_y > 0: 

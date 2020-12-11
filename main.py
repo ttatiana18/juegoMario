@@ -145,6 +145,7 @@ if __name__ == '__main__':
 				if event.key == pygame.K_n:
 					if tecla_presionada[pygame.K_s]:
 						jugador.vida=10000
+						jugador.truco=True
 						
 			if event.type == pygame.KEYUP:
 				jugador.con_final=0
@@ -335,7 +336,7 @@ if __name__ == '__main__':
 		pygame.display.flip()
 		time.sleep(2)
 		jugador.rect.x=500
-		jugador.rect.y=400
+		jugador.rect.y=450
 		for nube in all_generadores_caracoles:
 			all_generadores_caracoles.remove(nube)
 			all_sprites.remove(nube)
@@ -382,6 +383,7 @@ if __name__ == '__main__':
 		fin_juego=False
 
 		musica_fondo=pygame.mixer.Sound("./data/music/fondo2.ogg")
+		musica_fondo.set_volume(0.1)
 		musica_fondo.play()
 		tiempo=3600
 		while not fin_juego and not fin:
@@ -431,6 +433,7 @@ if __name__ == '__main__':
 					if event.key == pygame.K_n:
 						if tecla_presionada[pygame.K_s]:
 							jugador.vida=10000
+							jugador.truco=True
 							
 				if event.type == pygame.KEYUP:
 					jugador.con_final=0
