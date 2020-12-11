@@ -7,7 +7,7 @@ LIMITE_SUP = 50
 LIMITE_INF = 484
 class Jugador(pygame.sprite.Sprite):
 	"""docstring for Nave"""
-	def __init__(self, all_b_sprite, all_enemies,all_enemies_caracol,all_plantas, pos_fondo, info_ventana, info_fondo):
+	def __init__(self, all_b_sprite, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, pos_fondo, info_ventana, info_fondo):
 		super().__init__()
 		self.m=Recorte("./data/img/mario_1.png",26,5)
 		self.m2=Recorte("./data/img/mario_2.png",26,1)
@@ -29,6 +29,7 @@ class Jugador(pygame.sprite.Sprite):
 		self.all_b_sprite = all_b_sprite
 		self.all_enemies=all_enemies
 		self.all_plantas=all_plantas
+		self.all_plantas_enemies=all_plantas_enemies
 		self.all_enemies_caracol=all_enemies_caracol
 		self.all_modificadores=[]
 		self.ancho=info_ventana[0]
@@ -84,12 +85,14 @@ class Jugador(pygame.sprite.Sprite):
 				self.all_enemies.update(self.b_vel_x)
 				self.all_enemies_caracol.update(self.b_vel_x)
 				self.all_plantas.update(self.b_vel_x)
+				self.all_plantas_enemies.update(self.b_vel_x)
 			elif ((self.f_x+self.f_vel_x) >= (self.ancho-self.f_ancho)) and self.f_x!=0:
 				self.all_b_sprite.update(self.b_vel_x)
 				self.f_x +=self.f_vel_x
 				self.all_enemies.update(self.b_vel_x)
 				self.all_enemies_caracol.update(self.b_vel_x)
 				self.all_plantas.update(self.b_vel_x)
+				self.all_plantas_enemies.update(self.b_vel_x)
 
 		#movimiento vertical
 		if self.rect.y < LIMITE_SUP:
@@ -108,12 +111,14 @@ class Jugador(pygame.sprite.Sprite):
 				self.all_enemies.update(0,self.b_vel_y)
 				self.all_enemies_caracol.update(0,self.b_vel_y)
 				self.all_plantas.update(0,self.b_vel_y)
+				self.all_plantas_enemies.update(0,self.b_vel_y)
 			elif ((self.f_y+self.f_vel_y) < 0) and (self.f_y>self.alto-self.f_alto):
 				self.all_b_sprite.update(0,self.b_vel_y)
 				self.f_y +=self.f_vel_y
 				self.all_enemies.update(0,self.b_vel_y)
 				self.all_enemies_caracol.update(0,self.b_vel_y)
 				self.all_plantas.update(0,self.b_vel_y)
+				self.all_plantas_enemies.update(0,self.b_vel_y)
 		
 
 		self.rect.y += self.vel_y
@@ -229,6 +234,30 @@ class Jugador(pygame.sprite.Sprite):
 				elif self.estado==2:
 					self.estado=1
 					self.vida-=2
+		
+
+		enemies_plantas_hit_list = pygame.sprite.spritecollide(self, self.all_plantas_enemies, False)
+		for enemigo in enemies_plantas_hit_list:
+			if not self.muerto:
+				self.sonido_herido.play()
+				if(self.rect.right >= enemigo.rect.left and self.rect.x<enemigo.rect.x):
+					self.rect.right = enemigo.rect.left
+					self.vel_x = 0
+				elif (self.rect.left <= enemigo.rect.right and self.rect.x>enemigo.rect.x):
+					self.rect.left = enemigo.rect.right
+					self.vel_x = 0
+				elif(self.rect.top>=enemigo.rect.bottom and (self.rect.x==enemigo.rect.x)):
+					enemigo.rect.bottom=self.rect.top
+				if self.estado==0:
+					self.vida-=10
+				elif self.estado==1:
+					self.estado=0
+					self.vida-=5
+				elif self.estado==2:
+					self.estado=1
+					self.vida-=2
+
+		
 		
 		if self.estado==0:
 			self.sabana=self.m

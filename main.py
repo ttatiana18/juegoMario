@@ -25,7 +25,7 @@ if __name__ == '__main__':
 	condicion3=False
 
 	obj_lectura_mapa = LecturaSpriteMapa('info_mapa.txt')
-	all_sprites, all_bloques, all_generadores_caracoles = obj_lectura_mapa.cargarObjetosMapa()
+	all_sprites, all_bloques, all_generadores_caracoles,all_plantas_enemies = obj_lectura_mapa.cargarObjetosMapa()
 
 	fondo=pygame.image.load('./data/img/mapa3.png')
 	tuberia=pygame.image.load('./data/img/tubo.png')
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	balas_mario=pygame.sprite.Group()
 
 	fuente=pygame.font.Font(None,32)
-	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
+	jugador = Jugador(all_bloques, all_enemies,all_enemies_caracol,all_plantas,all_plantas_enemies, [f_x, f_y], [ANCHO,ALTO],[fondo_ancho,fondo_alto])
 	all_sprites.add(jugador)
 	musica_fondo=pygame.mixer.Sound("./data/music/fondo.ogg")
 	musica_fondo.set_volume(0)
@@ -283,16 +283,28 @@ if __name__ == '__main__':
 		pygame.display.flip()
 		time.sleep(2)
 		jugador.rect.x=500
-		while jugador.f_x>-3850:
+		jugador.rect.y=400
+		for nube in all_generadores_caracoles:
+			all_generadores_caracoles.remove(nube)
+			all_sprites.remove(nube)
+		for enemigo in all_enemies:
+			all_enemies.remove(enemigo)
+			all_sprites.remove(enemigo)
+		for caracol in all_enemies_caracol:
+			all_enemies_caracol.remove(caracol)
+			all_sprites.remove(caracol)
+		sonar_tuberia=True
+		while jugador.f_x>-3690:
+			if jugador.rect.x>870 and sonar_tuberia:
+				ingresar=pygame.mixer.Sound("./data/music/tuberia.ogg")
+				ingresar.play()
+				sonar_tuberia=False
 			jugador.vel_x=5
-			jugador.limite_derecho=950
+			jugador.limite_derecho=900
 			pantalla.blit(fondo,[-4000, -708])
-			print(jugador.f_x , jugador.f_y)
-			pantalla.blit(texto,[450,50])
-			pantalla.blit(texto2,[800,50])
 			all_sprites.update()
 			all_sprites.draw(pantalla)
-			pantalla.blit(tuberia,[600,400])
+			pantalla.blit(tuberia,[870,380])
 			pygame.display.flip()
 
 			clock.tick(30)
